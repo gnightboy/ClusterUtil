@@ -25,14 +25,6 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import me.xiaohuai.clusterutil.R;
-import me.xiaohuai.clusterutil.clusterutil.MarkerManager;
-import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
-import me.xiaohuai.clusterutil.clusterutil.projection.Point;
-import me.xiaohuai.clusterutil.clusterutil.projection.SphericalMercatorProjection;
-import me.xiaohuai.clusterutil.clusterutil.ui.IconGenerator;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -55,6 +47,15 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import me.xiaohuai.clusterutil.R;
+import me.xiaohuai.clusterutil.bean.ItemBean;
+import me.xiaohuai.clusterutil.clusterutil.MarkerManager;
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
+import me.xiaohuai.clusterutil.clusterutil.projection.Point;
+import me.xiaohuai.clusterutil.clusterutil.projection.SphericalMercatorProjection;
+import me.xiaohuai.clusterutil.clusterutil.ui.ClusterIconGenerator;
 
 import static me.xiaohuai.clusterutil.clusterutil.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.MAX_DISTANCE_AT_ZOOM;
 
@@ -66,7 +67,8 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         me.xiaohuai.clusterutil.clusterutil.clustering.view.ClusterRenderer<T> {
     private static final boolean SHOULD_ANIMATE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     private final BaiduMap mMap;
-    private final IconGenerator mIconGenerator;
+    //    private final IconGenerator mIconGenerator;
+    private final ClusterIconGenerator mIconGenerator;
     private final ClusterManager<T> mClusterManager;
     private final float mDensity;
 
@@ -92,7 +94,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     /**
      * If cluster size is less than this size, display individual markers.
      */
-    private static final int MIN_CLUSTER_SIZE = 4;
+    private static final int MIN_CLUSTER_SIZE = 1;
 
     /**
      * The currently displayed set of clusters.
@@ -120,10 +122,11 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     public DefaultClusterRenderer(Context context, BaiduMap map, ClusterManager<T> clusterManager) {
         mMap = map;
         mDensity = context.getResources().getDisplayMetrics().density;
-        mIconGenerator = new IconGenerator(context);
-        mIconGenerator.setContentView(makeSquareTextView(context));
-        mIconGenerator.setTextAppearance(R.style.ClusterIcon_TextAppearance);
-        mIconGenerator.setBackground(makeClusterBackground());
+//        mIconGenerator = new IconGenerator(context);
+//        mIconGenerator.setContentView(makeSquareTextView(context));
+//        mIconGenerator.setTextAppearance(R.style.ClusterIcon_TextAppearance);
+//        mIconGenerator.setBackground(makeClusterBackground());
+        mIconGenerator = new ClusterIconGenerator(context);
         mClusterManager = clusterManager;
     }
 
@@ -206,6 +209,26 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
             }
         }
         return BUCKETS[BUCKETS.length - 1];
+    }
+
+    /**
+     * 跟上面那个方法意思一样，不过这里是显示图标内值的总和
+     */
+    protected int getBucketNum(Cluster<T> cluster) {
+        if (cluster == null) {
+            return 0;
+        }
+        //强转为我们这个值
+        Cluster<ItemBean> itemBeanCluster = (Cluster<ItemBean>) cluster;
+        //默认集合数据
+        int count = 0;
+
+        //循环数据
+        for (ItemBean itemBean :
+                itemBeanCluster.getItems()) {
+            count = count + itemBean.getNum();
+        }
+        return count;
     }
 
     /**
@@ -433,7 +456,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
     @Override
     public void setOnClusterInfoWindowClickListener(ClusterManager
-                                                                .OnClusterInfoWindowClickListener<T> listener) {
+                                                            .OnClusterInfoWindowClickListener<T> listener) {
         mInfoWindowClickListener = listener;
     }
 
@@ -444,7 +467,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
     @Override
     public void setOnClusterItemInfoWindowClickListener(ClusterManager
-                                                                    .OnClusterItemInfoWindowClickListener<T> listener) {
+                                                                .OnClusterItemInfoWindowClickListener<T> listener) {
         mItemInfoWindowClickListener = listener;
     }
 
@@ -626,7 +649,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                 lock.lock();
                 return !(mCreateMarkerTasks.isEmpty() && mOnScreenCreateMarkerTasks.isEmpty()
                         && mOnScreenRemoveMarkerTasks.isEmpty() && mRemoveMarkerTasks.isEmpty()
-                                && mAnimationTasks.isEmpty());
+                        && mAnimationTasks.isEmpty());
             } finally {
                 lock.unlock();
             }
@@ -700,12 +723,16 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
      * The default implementation draws ClusterUtilApplication circle with ClusterUtilApplication rough count of the number of items.
      */
     protected void onBeforeClusterRendered(Cluster<T> cluster, MarkerOptions markerOptions) {
-        int bucket = getBucket(cluster);
+        //系统的聚合数量
+//        int bucket = getBucket(cluster);
+        //自定义聚合数量
+        int bucket = getBucketNum(cluster);
+
         BitmapDescriptor descriptor = mIcons.get(bucket);
         if (descriptor == null) {
-            mColoredCircleBackground.getPaint().setColor(getColor(bucket));
+//            mColoredCircleBackground.getPaint().setColor(getColor(bucket));
             descriptor = BitmapDescriptorFactory.fromBitmap(mIconGenerator.makeIcon(getClusterText(bucket)));
-            mIcons.put(bucket, descriptor);
+//            mIcons.put(bucket, descriptor);
         }
         // TODO: consider adding anchor(.5, .5) (Individual markers will overlap more often)
         markerOptions.icon(descriptor);

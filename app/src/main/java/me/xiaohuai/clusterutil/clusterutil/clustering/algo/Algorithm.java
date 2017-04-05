@@ -5,11 +5,11 @@
 package me.xiaohuai.clusterutil.clusterutil.clustering.algo;
 
 
-import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
-
 import java.util.Collection;
 import java.util.Set;
+
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 
 /**
  * Logic for computing clusters

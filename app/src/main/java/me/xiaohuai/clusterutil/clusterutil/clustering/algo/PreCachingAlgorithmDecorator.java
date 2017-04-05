@@ -6,13 +6,13 @@ package me.xiaohuai.clusterutil.clusterutil.clustering.algo;
 
 import android.support.v4.util.LruCache;
 
-import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 
 /**
  * Optimistically fetch clusters for adjacent zoom levels, caching them as necessary.

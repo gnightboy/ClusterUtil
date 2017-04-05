@@ -1,25 +1,17 @@
 package me.xiaohuai.clusterutil.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import me.xiaohuai.clusterutil.R;
 import me.xiaohuai.clusterutil.bean.ItemBean;
-import me.xiaohuai.clusterutil.clusterutil.MarkerManager;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
 
 /**
@@ -71,10 +63,10 @@ public class MainActivity extends FragmentActivity {
         LatLng latLng3 = new LatLng(39.9173190000, 116.4090590000);
         LatLng latLng4 = new LatLng(39.9157690000, 116.4060050000);
         LatLng latLng5 = new LatLng(39.9150500000, 116.4015850000);
-        LatLng latLng6 = new LatLng(39.9262450000,116.4287530000);
-        LatLng latLng7 = new LatLng(39.9218180000,116.4362270000);
-        LatLng latLng8 = new LatLng(39.9311140000,116.4322020000);
-        LatLng latLng9 = new LatLng(39.9355400000,116.4066190000);
+        LatLng latLng6 = new LatLng(39.9262450000, 116.4287530000);
+        LatLng latLng7 = new LatLng(39.9218180000, 116.4362270000);
+        LatLng latLng8 = new LatLng(39.9311140000, 116.4322020000);
+        LatLng latLng9 = new LatLng(39.9355400000, 116.4066190000);
         LatLng latLng10 = new LatLng(39.9150500000, 116.4015850000);
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(latLng1);
@@ -91,7 +83,8 @@ public class MainActivity extends FragmentActivity {
         List<ItemBean> datas = new ArrayList<>();
         for (int i = 0; i < latLngs.size(); i++) {
             final LatLng item = latLngs.get(i);
-            ItemBean itemBean = new ItemBean(MainActivity.this, item);
+            int num = i % 2;
+            ItemBean itemBean = new ItemBean(MainActivity.this, item, num);
             datas.add(itemBean);
         }
 

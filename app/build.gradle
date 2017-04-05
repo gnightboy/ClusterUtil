@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        xiaohuai {
+            keyAlias 'XiaoHuai'
+            keyPassword 'xiaohuai.me'
+            storeFile file('xiaohuai.jks')
+            storePassword 'xiaohuai.me'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -12,6 +20,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
+    }
+    buildTypes {
+        debug {
+            //debug时使用release签名
+            signingConfig signingConfigs.xiaohuai
+        }
+        release {
+            //debug时使用release签名
+            signingConfig signingConfigs.xiaohuai
+            //混淆
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
     sourceSets {
         main {

@@ -8,12 +8,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
-import me.xiaohuai.clusterutil.clusterutil.MarkerManager;
-import me.xiaohuai.clusterutil.clusterutil.clustering.algo.Algorithm;
-import me.xiaohuai.clusterutil.clusterutil.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
-import me.xiaohuai.clusterutil.clusterutil.clustering.algo.PreCachingAlgorithmDecorator;
-import me.xiaohuai.clusterutil.clusterutil.clustering.view.ClusterRenderer;
-import me.xiaohuai.clusterutil.clusterutil.clustering.view.DefaultClusterRenderer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.Marker;
@@ -22,6 +16,13 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import me.xiaohuai.clusterutil.clusterutil.MarkerManager;
+import me.xiaohuai.clusterutil.clusterutil.clustering.algo.Algorithm;
+import me.xiaohuai.clusterutil.clusterutil.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
+import me.xiaohuai.clusterutil.clusterutil.clustering.algo.PreCachingAlgorithmDecorator;
+import me.xiaohuai.clusterutil.clusterutil.clustering.view.ClusterRenderer;
+import me.xiaohuai.clusterutil.clusterutil.clustering.view.DefaultClusterRenderer;
 
 /**
  * Groups many items on ClusterUtilApplication map based on zoom level.

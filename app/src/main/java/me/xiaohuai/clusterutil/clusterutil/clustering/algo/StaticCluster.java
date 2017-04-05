@@ -4,13 +4,14 @@
 
 package me.xiaohuai.clusterutil.clusterutil.clustering.algo;
 
-import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 
 /**
  * A cluster whose center is determined upon creation.

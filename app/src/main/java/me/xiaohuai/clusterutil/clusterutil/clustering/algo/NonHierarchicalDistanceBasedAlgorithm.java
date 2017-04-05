@@ -4,12 +4,6 @@
 
 package me.xiaohuai.clusterutil.clusterutil.clustering.algo;
 
-import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
-import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
-import me.xiaohuai.clusterutil.clusterutil.projection.Bounds;
-import me.xiaohuai.clusterutil.clusterutil.projection.Point;
-import me.xiaohuai.clusterutil.clusterutil.projection.SphericalMercatorProjection;
-import me.xiaohuai.clusterutil.clusterutil.quadtree.PointQuadTree;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
@@ -20,6 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
+import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
+import me.xiaohuai.clusterutil.clusterutil.projection.Bounds;
+import me.xiaohuai.clusterutil.clusterutil.projection.Point;
+import me.xiaohuai.clusterutil.clusterutil.projection.SphericalMercatorProjection;
+import me.xiaohuai.clusterutil.clusterutil.quadtree.PointQuadTree;
 
 /**
  * A simple clustering algorithm with O(nlog n) performance. Resulting clusters are not
@@ -93,8 +94,8 @@ public class NonHierarchicalDistanceBasedAlgorithm<T extends ClusterItem> implem
         final Set<QuadItem<T>> visitedCandidates = new HashSet<QuadItem<T>>();
         final Set<Cluster<T>> results = new HashSet<Cluster<T>>();
         final Map<QuadItem<T>, Double> distanceToCluster = new HashMap<QuadItem<T>, Double>();
-        final Map<QuadItem<T>, me.xiaohuai.clusterutil.clusterutil.clustering.algo.StaticCluster<T>> itemToCluster =
-                new HashMap<QuadItem<T>, me.xiaohuai.clusterutil.clusterutil.clustering.algo.StaticCluster<T>>();
+        final Map<QuadItem<T>, StaticCluster<T>> itemToCluster =
+                new HashMap<QuadItem<T>, StaticCluster<T>>();
 
         synchronized (mQuadTree) {
             for (QuadItem<T> candidate : mItems) {

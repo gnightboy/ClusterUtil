@@ -5,11 +5,11 @@
 package me.xiaohuai.clusterutil.clusterutil.clustering.view;
 
 
+import java.util.Set;
+
 import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
 import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterItem;
 import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
-
-import java.util.Set;
 
 /**
  * Renders clusters.
