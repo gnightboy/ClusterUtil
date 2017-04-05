@@ -2,13 +2,17 @@ Android百度地图聚合
 ***
 
 - 效果
+</br>
+![](https://github.com/gnightboy/ClusterUtil/blob/master/screenshots/ClusterUtilBack.gif)
+</br>
+</br>
 ![](https://github.com/gnightboy/ClusterUtil/blob/master/screenshots/ClusterUtil.gif)
 
 - 使用说明
-	- 先下载项目
-	- `AndroidManifest.xml`中配置百度地图key
-	- 项目使用的`gradle-3.3`，如果怕导入卡，请在`gradle -> wrapper -> gradle-wrapper.properties`更改`gradle`版本
+	- 项目下载后可以直接运行
+	- 项目使用的`gradle-3.3`，导入项目出现长时间Build，请将下载的项目文件中的`gradle -> wrapper -> gradle-wrapper.properties`更改为您项目中有的`gradle`版本
 	- 如果对您有帮助，请`star`一下，谢谢
 
 - 详细操作手册阅读
-	[阅读集成文档](https://xiaohuai.me/2015/12/25/clusterutil/)
+</br>
+	[阅读集成文档](https://www.xiaohuai.me/2017/03/28/clusterutilback/)
