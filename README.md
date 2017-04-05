@@ -2,10 +2,7 @@ Android百度地图聚合
 ***
 
 - 效果
-</br>
 ![](https://github.com/gnightboy/ClusterUtil/blob/master/screenshots/ClusterUtilBack.gif)
-</br>
-</br>
 ![](https://github.com/gnightboy/ClusterUtil/blob/master/screenshots/ClusterUtil.gif)
 
 - 使用说明
@@ -14,5 +11,4 @@ Android百度地图聚合
 	- 如果对您有帮助，请`star`一下，谢谢
 
 - 详细操作手册阅读
-</br>
 	[阅读集成文档](https://www.xiaohuai.me/2017/03/28/clusterutilback/)
