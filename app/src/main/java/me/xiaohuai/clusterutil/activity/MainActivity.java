@@ -1,9 +1,14 @@
 package me.xiaohuai.clusterutil.activity;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
@@ -12,6 +17,7 @@ import java.util.List;
 
 import me.xiaohuai.clusterutil.R;
 import me.xiaohuai.clusterutil.bean.ItemBean;
+import me.xiaohuai.clusterutil.clusterutil.clustering.Cluster;
 import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
 
 /**
@@ -19,7 +25,8 @@ import me.xiaohuai.clusterutil.clusterutil.clustering.ClusterManager;
  *
  * @author XiaoHuai
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements ClusterManager.OnClusterClickListener<ItemBean>,
+        ClusterManager.OnClusterItemClickListener<ItemBean> {
     /**
      * 地图控件
      */
@@ -50,6 +57,8 @@ public class MainActivity extends FragmentActivity {
         // 设置地图监听，当地图状态发生改变时，进行点聚合运算
         mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
         mBaiduMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setOnClusterItemClickListener(this);
         //设置数据
         setDatas();
     }
@@ -112,4 +121,69 @@ public class MainActivity extends FragmentActivity {
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mMapView.onPause();
     }
+
+    @Override
+    public boolean onClusterClick(Cluster<ItemBean> cluster) {
+        //隐藏InfoWindows
+        mBaiduMap.hideInfoWindow();
+        //InfoWindows第一个条件
+        View view = infoWindow("onClusterClick", "数量：" + cluster.getSize());
+        //第二个条件
+        LatLng latLng = cluster.getPosition();
+        //第三个条件
+        int y = -getYOffset(R.mipmap.park_icon);
+        //显示InfoWindows
+        mBaiduMap.showInfoWindow(new InfoWindow(view, latLng, y));
+        return false;
+    }
+
+    @Override
+    public boolean onClusterItemClick(ItemBean item) {
+        //隐藏InfoWindows
+        mBaiduMap.hideInfoWindow();
+        //InfoWindows第一个条件
+        View view = infoWindow("onClusterItemClick", "图标内容：" + item.getNum());
+        //第二个条件
+        LatLng latLng = item.getPosition();
+        //第三个条件
+        int y = -item.getBitmapDescriptor().getBitmap().getHeight();
+        //显示InfoWindows
+        mBaiduMap.showInfoWindow(new InfoWindow(view, latLng, y));
+        return false;
+    }
+
+    /**
+     * 获取指定图片的高度
+     * （因为每种覆盖物都有各自的图，用图的高度来代表它的偏移量在合适不过了）
+     *
+     * @param resourcesId 资源ID
+     * @return 偏移量高度
+     */
+    public int getYOffset(int resourcesId) {
+        //图片工厂
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        //true表示只读图片，不加载到内存中
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), resourcesId, opts);
+        int width = opts.outWidth;
+        int height = opts.outHeight;
+        return height;
+    }
+
+    /**
+     * 自定义infoWinfow窗口(中间显示距离)
+     *
+     * @param content 显示的内容
+     * @param title   标题
+     */
+    private View infoWindow(String title, String content) {
+        View infoWindow = LayoutInflater.from(this).inflate(R.layout.layout_custom_infowindow_view, null);
+
+        TextView tv_title = (TextView) infoWindow.findViewById(R.id.tv_title);
+        TextView tv_content = (TextView) infoWindow.findViewById(R.id.tv_content);
+        tv_content.setText(String.valueOf(content));
+        tv_title.setText(String.valueOf(title));
+        return infoWindow;
+    }
+
 }
